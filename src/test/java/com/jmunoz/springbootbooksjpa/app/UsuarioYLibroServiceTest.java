@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestPropertySource("/application.properties")
@@ -46,6 +48,21 @@ class UsuarioYLibroServiceTest {
 		assertFalse(usuarioService.checkIfUsuarioIsNull(1));
 
 		assertTrue(usuarioService.checkIfUsuarioIsNull(0));
+	}
+
+	@Test
+	void deleteUsuarioService() {
+		// Confirmamos que existe id 1
+		Optional<UsuarioComprador> deletedUsuarioComprador = usuarioDao.findById(1);
+		assertTrue(deletedUsuarioComprador.isPresent(), "Devuelve True");
+
+		// Se borra
+		usuarioService.deleteUsuario(1);
+
+		// Ya no podemos encontrar el id 1 porque se ha borrado
+		deletedUsuarioComprador = usuarioDao.findById(1);
+		assertFalse(deletedUsuarioComprador.isPresent(), "Devuelve False");
+
 	}
 
 	@AfterEach

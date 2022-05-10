@@ -26,4 +26,10 @@ public class UsuarioYLibroService {
 
         return usuario.isEmpty();
     }
+
+    public void deleteUsuario(Integer id) {
+        if (!checkIfUsuarioIsNull(id)) {
+            usuarioDao.deleteById(id);
+        }
+    }
 }
