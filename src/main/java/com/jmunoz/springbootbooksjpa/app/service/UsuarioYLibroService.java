@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,5 +19,11 @@ public class UsuarioYLibroService {
         UsuarioComprador usuario = new UsuarioComprador(nombre, apellidos, email);
         usuario.setId(0);
         usuarioDao.save(usuario);
+    }
+
+    public boolean checkIfUsuarioIsNull(Integer id) {
+        Optional<UsuarioComprador> usuario = usuarioDao.findById(id);
+
+        return usuario.isEmpty();
     }
 }
