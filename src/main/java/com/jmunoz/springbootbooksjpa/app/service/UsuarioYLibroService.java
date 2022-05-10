@@ -32,4 +32,8 @@ public class UsuarioYLibroService {
             usuarioDao.deleteById(id);
         }
     }
+
+    public Iterable<UsuarioComprador> getBiblioteca() {
+        return usuarioDao.findAll();
+    }
 }

@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +64,19 @@ class UsuarioYLibroServiceTest {
 		// Ya no podemos encontrar el id 1 porque se ha borrado
 		deletedUsuarioComprador = usuarioDao.findById(1);
 		assertFalse(deletedUsuarioComprador.isPresent(), "Devuelve False");
+	}
 
+	@Test
+	void getBibliotecaService() {
+		Iterable<UsuarioComprador> iterableUsuarioComprador = usuarioService.getBiblioteca();
+
+		List<UsuarioComprador> usuariosCompradores = new ArrayList<>();
+
+		for (UsuarioComprador usuarioComprador: iterableUsuarioComprador) {
+			usuariosCompradores.add(usuarioComprador);
+		}
+
+		assertEquals(1, usuariosCompradores.size());
 	}
 
 	@AfterEach
