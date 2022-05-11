@@ -12,7 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestPropertySource("/application.properties")
 @AutoConfigureMockMvc
@@ -45,15 +50,19 @@ public class BibliotecaControllerTest {
     void getUsuarioHttpRequest() throws Exception {
         UsuarioComprador usuarioUno = new BibliotecaUsuarioComprador("José", "Muñoz",
                 "jmunoz@gmail.com");
-
         UsuarioComprador usuarioDos = new BibliotecaUsuarioComprador("Adriana", "Acosta",
                 "adri@gmail.com");
 
         List<UsuarioComprador> usuarioCompradorList = new ArrayList<>(Arrays.asList(usuarioUno, usuarioDos));
-
         when(usuarioYLibroServiceMock.getBiblioteca()).thenReturn(usuarioCompradorList);
-
         assertIterableEquals(usuarioCompradorList, usuarioYLibroServiceMock.getBiblioteca());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "index");
     }
 
     @AfterEach
