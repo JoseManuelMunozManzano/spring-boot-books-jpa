@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class BibliotecaController {
@@ -22,6 +23,13 @@ public class BibliotecaController {
     public String getUsuarios(Model m) {
         Iterable<UsuarioComprador> usuariosCompradores = usuarioService.getBiblioteca();
         m.addAttribute("usuarios", usuariosCompradores);
+
+        return "index";
+    }
+
+    @PostMapping("/")
+    public String createUsuario(UsuarioComprador usuario, Model m) {
+        usuarioService.createUsuario(usuario.getNombre(), usuario.getApellidos(), usuario.getEmail());
 
         return "index";
     }
