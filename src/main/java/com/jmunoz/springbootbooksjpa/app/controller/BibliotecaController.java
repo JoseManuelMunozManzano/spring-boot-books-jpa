@@ -39,6 +39,10 @@ public class BibliotecaController {
 
     @GetMapping("/delete/usuario/{id}")
     public String deleteUsuario(@PathVariable int id, Model m) {
+        if (usuarioService.checkIfUsuarioIsNull(id)) {
+            return "error";
+        }
+
         usuarioService.deleteUsuario(id);
 
         Iterable<UsuarioComprador> usuarioCompradores = usuarioService.getBiblioteca();

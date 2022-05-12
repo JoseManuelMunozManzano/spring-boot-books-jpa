@@ -122,6 +122,17 @@ public class BibliotecaControllerTest {
         assertFalse(usuarioDao.findById(1).isPresent());
     }
 
+    @Test
+    void deleteUsuarioHttpRequestErrorPage() throws Exception {
+        // Intento borrar el usuario 0 que no existe
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/delete/usuario/{id}", 0))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav,"error");
+    }
+
     @AfterEach
     void tearDown() {
         jdbc.execute("DELETE FROM usuario");
