@@ -44,7 +44,7 @@ public class BibliotecaControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private UsuarioYLibroService usuarioYLibroServiceMock;
+    private UsuarioYLibroService usuarioCreateServiceMock;
 
     @Autowired
     private UsuarioDao usuarioDao;
@@ -72,8 +72,8 @@ public class BibliotecaControllerTest {
                 "adri@gmail.com");
 
         List<UsuarioComprador> usuarioCompradorList = new ArrayList<>(Arrays.asList(usuarioUno, usuarioDos));
-        when(usuarioYLibroServiceMock.getBiblioteca()).thenReturn(usuarioCompradorList);
-        assertIterableEquals(usuarioCompradorList, usuarioYLibroServiceMock.getBiblioteca());
+        when(usuarioCreateServiceMock.getBiblioteca()).thenReturn(usuarioCompradorList);
+        assertIterableEquals(usuarioCompradorList, usuarioCreateServiceMock.getBiblioteca());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().isOk()).andReturn();
@@ -85,6 +85,13 @@ public class BibliotecaControllerTest {
 
     @Test
     void createUsuarioHttpRequest() throws Exception {
+        UsuarioComprador usuarioUno = new UsuarioComprador("José", "Muñoz", "jmunoz@gmail.com");
+        List<UsuarioComprador> usuarioCompradorList = new ArrayList<>(Arrays.asList(usuarioUno));
+
+        when(usuarioCreateServiceMock.getBiblioteca()).thenReturn(usuarioCompradorList);
+
+        assertIterableEquals(usuarioCompradorList, usuarioCreateServiceMock.getBiblioteca());
+
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("nombre", request.getParameterValues("nombre"))

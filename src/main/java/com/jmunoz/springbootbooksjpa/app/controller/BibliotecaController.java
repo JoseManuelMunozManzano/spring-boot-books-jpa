@@ -31,6 +31,9 @@ public class BibliotecaController {
     public String createUsuario(UsuarioComprador usuario, Model m) {
         usuarioService.createUsuario(usuario.getNombre(), usuario.getApellidos(), usuario.getEmail());
 
+        Iterable<UsuarioComprador> usuarioCompradores = usuarioService.getBiblioteca();
+        m.addAttribute("usuarios", usuarioCompradores);
+
         return "index";
     }
 
