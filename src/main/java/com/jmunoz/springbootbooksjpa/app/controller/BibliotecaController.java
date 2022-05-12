@@ -37,6 +37,16 @@ public class BibliotecaController {
         return "index";
     }
 
+    @GetMapping("/delete/usuario/{id}")
+    public String deleteUsuario(@PathVariable int id, Model m) {
+        usuarioService.deleteUsuario(id);
+
+        Iterable<UsuarioComprador> usuarioCompradores = usuarioService.getBiblioteca();
+        m.addAttribute("usuarios", usuarioCompradores);
+
+        return "index";
+    }
+
     @GetMapping("/informacionUsuario/{id}")
     public String informacionUsuario(@PathVariable int id, Model m) {
         return "informacionUsuario";
