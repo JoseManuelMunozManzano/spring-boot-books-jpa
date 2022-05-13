@@ -1,8 +1,10 @@
 package com.jmunoz.springbootbooksjpa.app;
 
 import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
+import com.jmunoz.springbootbooksjpa.app.models.LibroWeb;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
+import com.jmunoz.springbootbooksjpa.app.repository.LibroWebDao;
 import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import com.jmunoz.springbootbooksjpa.app.service.UsuarioYLibroService;
 import org.junit.jupiter.api.AfterEach;
@@ -36,6 +38,9 @@ class UsuarioYLibroServiceTest {
 
 	@Autowired
 	private LibroFisicoDao libroFisicoDao;
+
+	@Autowired
+	private LibroWebDao libroWebDao;
 
 	@BeforeEach
 	void setUp() {
@@ -90,10 +95,13 @@ class UsuarioYLibroServiceTest {
 	@Test
 	void createLibroService() {
 		assertTrue(usuarioService.createLibro("Dune", 1, "Físico"));
+		assertTrue(usuarioService.createLibro("Diseño de Patrones", 1, "Web"));
 
 		Iterable<LibroFisico> librosFisicos = libroFisicoDao.findLibroByUsuarioId(1);
+		Iterable<LibroWeb> librosWeb = libroWebDao.findLibroByUsuarioId(1);
 
 		assertTrue(librosFisicos.iterator().hasNext(), "Usuario tiene libros físicos");
+		assertTrue(librosWeb.iterator().hasNext(), "Usuario tiene libros web");
 	}
 
 	@AfterEach
