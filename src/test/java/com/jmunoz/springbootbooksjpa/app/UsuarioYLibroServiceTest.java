@@ -1,12 +1,15 @@
 package com.jmunoz.springbootbooksjpa.app;
 
+import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
 import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import com.jmunoz.springbootbooksjpa.app.service.UsuarioYLibroService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -30,6 +33,9 @@ class UsuarioYLibroServiceTest {
 
 	@Autowired
 	private UsuarioDao usuarioDao;
+
+	@Autowired
+	private LibroFisicoDao libroFisicoDao;
 
 	@BeforeEach
 	void setUp() {
@@ -79,6 +85,15 @@ class UsuarioYLibroServiceTest {
 		}
 
 		assertEquals(5, usuariosCompradores.size());
+	}
+
+	@Test
+	void createLibroService() {
+		assertTrue(usuarioService.createLibro("Dune", 1, "Físico"));
+
+		Iterable<LibroFisico> librosFisicos = libroFisicoDao.findLibroByUsuarioId(1);
+
+		assertTrue(librosFisicos.iterator().hasNext(), "Usuario tiene libros físicos");
 	}
 
 	@AfterEach

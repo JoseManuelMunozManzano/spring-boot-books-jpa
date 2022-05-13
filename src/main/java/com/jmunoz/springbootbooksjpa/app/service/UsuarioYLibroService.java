@@ -1,8 +1,11 @@
 package com.jmunoz.springbootbooksjpa.app.service;
 
+import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
 import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,6 +17,13 @@ public class UsuarioYLibroService {
 
     @Autowired
     private UsuarioDao usuarioDao;
+
+    @Autowired
+    @Qualifier("libroFisico")
+    private LibroFisico libroFisico;
+
+    @Autowired
+    private LibroFisicoDao libroFisicoDao;
 
     public void createUsuario(String nombre, String apellidos, String email) {
         UsuarioComprador usuario = new UsuarioComprador(nombre, apellidos, email);
@@ -36,4 +46,22 @@ public class UsuarioYLibroService {
     public Iterable<UsuarioComprador> getBiblioteca() {
         return usuarioDao.findAll();
     }
+
+    public boolean createLibro(String libro, int usuarioId, String tipoLibro) {
+        if (checkIfUsuarioIsNull(usuarioId)) {
+            return false;
+        }
+
+        if (tipoLibro.equals("Físico")) {
+            libroFisico.setId(0);
+            libroFisico.setLibro(libro);
+            libroFisico.setUsuarioId(usuarioId);
+            libroFisicoDao.save(libroFisico);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }
