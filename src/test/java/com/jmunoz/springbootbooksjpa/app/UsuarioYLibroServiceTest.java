@@ -19,6 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,9 +51,9 @@ class UsuarioYLibroServiceTest {
 	void setUp() {
 		jdbc.execute("INSERT INTO usuario(id, nombre, apellidos, email) " +
 				"VALUES(1, 'José Manuel', 'Muñoz Manzano', 'jmunoz@gmail.com')");
-		jdbc.execute("INSERT INTO libro_fisico(id, student_id, libro) values(1, 1, 'Dune')");
-		jdbc.execute("INSERT INTO libro_web(id, student_id, libro) values(1, 1, 'Diseño de Patrones')");
-		jdbc.execute("INSERT INTO libro_kindle(id, student_id, libro) values(1, 1, 'La mano izquierda de la oscuridad')");
+		jdbc.execute("INSERT INTO libro_fisico(id, usuario_id, libro) values(1, 1, 'Dune')");
+		jdbc.execute("INSERT INTO libro_web(id, usuario_id, libro) values(1, 1, 'Diseño de Patrones')");
+		jdbc.execute("INSERT INTO libro_kindle(id, usuario_id, libro) values(1, 1, 'La mano izquierda de la oscuridad')");
 	}
 
 	@Test
@@ -112,6 +113,10 @@ class UsuarioYLibroServiceTest {
 		assertTrue(librosFisicos.iterator().hasNext(), "Usuario tiene libros físicos");
 		assertTrue(librosWeb.iterator().hasNext(), "Usuario tiene libros web");
 		assertTrue(librosKindle.iterator().hasNext(), "Usuario tiene libros kindle");
+
+		assertEquals(2, ((Collection<LibroFisico>) librosFisicos).size(), "Usuario tiene libros físicos");
+		assertEquals(2, ((Collection<LibroWeb>) librosWeb).size(), "Usuario tiene libros web");
+		assertEquals(2, ((Collection<LibroKindle>) librosKindle).size(), "Usuario tiene libros kindle");
 	}
 
 	@AfterEach
