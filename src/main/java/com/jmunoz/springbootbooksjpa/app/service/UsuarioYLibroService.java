@@ -1,9 +1,11 @@
 package com.jmunoz.springbootbooksjpa.app.service;
 
 import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
+import com.jmunoz.springbootbooksjpa.app.models.LibroKindle;
 import com.jmunoz.springbootbooksjpa.app.models.LibroWeb;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
+import com.jmunoz.springbootbooksjpa.app.repository.LibroKindleDao;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroWebDao;
 import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,13 @@ public class UsuarioYLibroService {
 
     @Autowired
     private LibroWebDao libroWebDao;
+
+    @Autowired
+    @Qualifier("libroKindle")
+    private LibroKindle libroKindle;
+
+    @Autowired
+    private LibroKindleDao libroKindleDao;
 
     public void createUsuario(String nombre, String apellidos, String email) {
         UsuarioComprador usuario = new UsuarioComprador(nombre, apellidos, email);
@@ -75,6 +84,15 @@ public class UsuarioYLibroService {
             libroWeb.setLibro(libro);
             libroWeb.setUsuarioId(usuarioId);
             libroWebDao.save(libroWeb);
+
+            return true;
+        }
+
+        if (tipoLibro.equals("Kindle")) {
+            libroKindle.setId(0);
+            libroKindle.setLibro(libro);
+            libroKindle.setUsuarioId(usuarioId);
+            libroKindleDao.save(libroKindle);
 
             return true;
         }
