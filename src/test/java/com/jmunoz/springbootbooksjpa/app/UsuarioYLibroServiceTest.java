@@ -13,7 +13,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -51,6 +50,9 @@ class UsuarioYLibroServiceTest {
 	void setUp() {
 		jdbc.execute("INSERT INTO usuario(id, nombre, apellidos, email) " +
 				"VALUES(1, 'José Manuel', 'Muñoz Manzano', 'jmunoz@gmail.com')");
+		jdbc.execute("INSERT INTO libro_fisico(id, student_id, libro) values(1, 1, 'Dune')");
+		jdbc.execute("INSERT INTO libro_web(id, student_id, libro) values(1, 1, 'Diseño de Patrones')");
+		jdbc.execute("INSERT INTO libro_kindle(id, student_id, libro) values(1, 1, 'La mano izquierda de la oscuridad')");
 	}
 
 	@Test
@@ -115,5 +117,8 @@ class UsuarioYLibroServiceTest {
 	@AfterEach
 	void tearDown() {
 		jdbc.execute("DELETE FROM usuario");
+		jdbc.execute("DELETE FROM libro_fisico");
+		jdbc.execute("DELETE FROM libro_web");
+		jdbc.execute("DELETE FROM libro_kindle");
 	}
 }
