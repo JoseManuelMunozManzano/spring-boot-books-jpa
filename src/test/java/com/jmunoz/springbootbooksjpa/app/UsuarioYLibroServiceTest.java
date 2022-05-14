@@ -160,6 +160,13 @@ class UsuarioYLibroServiceTest {
 		assertEquals(1, bibliotecaUsuarioComprador.getUsuarioLibros().getLibroKindleResultados().size());
 	}
 
+	@Test
+	void usuarioInformacionServiceDevuelveNull() {
+		BibliotecaUsuarioComprador bibliotecaUsuarioComprador = usuarioService.usuarioInformacion(0);
+
+		assertNull(bibliotecaUsuarioComprador);
+	}
+
 	@AfterEach
 	void tearDown() {
 		jdbc.execute("DELETE FROM usuario");

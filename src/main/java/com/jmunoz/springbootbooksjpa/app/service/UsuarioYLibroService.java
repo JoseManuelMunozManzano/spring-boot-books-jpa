@@ -52,6 +52,10 @@ public class UsuarioYLibroService {
     }
 
     public BibliotecaUsuarioComprador usuarioInformacion(int id) {
+        if (checkIfUsuarioIsNull(id)) {
+            return null;
+        }
+
         Optional<UsuarioComprador> usuario = usuarioDao.findById(id);
         Iterable<LibroFisico> librosFisicos = libroFisicoDao.findLibroByUsuarioId(id);
         Iterable<LibroWeb> librosWeb = libroWebDao.findLibroByUsuarioId(id);
