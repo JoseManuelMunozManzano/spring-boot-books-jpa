@@ -76,14 +76,29 @@ class UsuarioYLibroServiceTest {
 	void deleteUsuarioService() {
 		// Confirmamos que existe id 1
 		Optional<UsuarioComprador> deletedUsuarioComprador = usuarioDao.findById(1);
+		// Se borran también los libros de los usuarios
+		Optional<LibroFisico> deleteLibroFisico = libroFisicoDao.findById(1);
+		Optional<LibroWeb> deleteLibroWeb = libroWebDao.findById(1);
+		Optional<LibroKindle> deleteLibroKindle = libroKindleDao.findById(1);
+
 		assertTrue(deletedUsuarioComprador.isPresent(), "Devuelve True");
+		assertTrue(deleteLibroFisico.isPresent(), "Devuelve True");
+		assertTrue(deleteLibroWeb.isPresent(), "Devuelve True");
+		assertTrue(deleteLibroKindle.isPresent(), "Devuelve True");
 
 		// Se borra
 		usuarioService.deleteUsuario(1);
 
 		// Ya no podemos encontrar el id 1 porque se ha borrado
 		deletedUsuarioComprador = usuarioDao.findById(1);
+		deleteLibroFisico = libroFisicoDao.findById(1);
+		deleteLibroWeb = libroWebDao.findById(1);
+		deleteLibroKindle = libroKindleDao.findById(1);
+
 		assertFalse(deletedUsuarioComprador.isPresent(), "Devuelve False");
+		assertFalse(deleteLibroFisico.isPresent());
+		assertFalse(deleteLibroWeb.isPresent());
+		assertFalse(deleteLibroKindle.isPresent());
 	}
 
 	@Sql("/insertData.sql")

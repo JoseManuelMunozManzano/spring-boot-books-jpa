@@ -7,4 +7,6 @@ public interface LibroFisicoDao extends CrudRepository<LibroFisico, Integer> {
 
     Iterable<LibroFisico> findLibroByUsuarioId(int id);
 
+    void deleteByUsuarioId(int id);
+
 }

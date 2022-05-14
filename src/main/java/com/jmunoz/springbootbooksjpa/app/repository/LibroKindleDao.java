@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface LibroKindleDao extends CrudRepository<LibroKindle, Integer> {
 
     Iterable<LibroKindle> findLibroByUsuarioId(int id);
+
+    void deleteByUsuarioId(int id);
 }

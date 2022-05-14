@@ -58,6 +58,10 @@ public class UsuarioYLibroService {
     public void deleteUsuario(Integer id) {
         if (!checkIfUsuarioIsNull(id)) {
             usuarioDao.deleteById(id);
+
+            libroFisicoDao.deleteByUsuarioId(id);
+            libroWebDao.deleteByUsuarioId(id);
+            libroKindleDao.deleteByUsuarioId(id);
         }
     }
 
