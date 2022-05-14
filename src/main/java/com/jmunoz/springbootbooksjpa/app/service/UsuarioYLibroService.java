@@ -113,6 +113,26 @@ public class UsuarioYLibroService {
             libroFisicoDao.deleteById(id);
         }
 
+        if (tipoLibro.equals("Web")) {
+            Optional<LibroWeb> libro = libroWebDao.findById(id);
+            if (libro.isEmpty()) {
+                return usuarioId;
+            }
+
+            usuarioId = libro.get().getUsuarioId();
+            libroWebDao.deleteById(id);
+        }
+
+        if (tipoLibro.equals("Kindle")) {
+            Optional<LibroKindle> libro = libroKindleDao.findById(id);
+            if (libro.isEmpty()) {
+                return usuarioId;
+            }
+
+            usuarioId = libro.get().getUsuarioId();
+            libroKindleDao.deleteById(id);
+        }
+
         return usuarioId;
     }
 }

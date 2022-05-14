@@ -122,6 +122,8 @@ class UsuarioYLibroServiceTest {
 	@Test
 	void deleteGradeService() {
 		assertEquals(1, usuarioService.deleteLibro(1, "Físico"), "Devuelve usuario id tras delete");
+		assertEquals(1, usuarioService.deleteLibro(1, "Web"), "Devuelve usuario id tras delete");
+		assertEquals(1, usuarioService.deleteLibro(1, "Kindle"), "Devuelve usuario id tras delete");
 	}
 
 	@AfterEach
