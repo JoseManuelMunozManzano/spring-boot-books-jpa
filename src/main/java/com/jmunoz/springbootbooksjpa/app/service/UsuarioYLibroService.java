@@ -100,4 +100,19 @@ public class UsuarioYLibroService {
         return false;
     }
 
+    public int deleteLibro(int id, String tipoLibro) {
+        int usuarioId = 0;
+
+        if (tipoLibro.equals("Físico")) {
+            Optional<LibroFisico> libro = libroFisicoDao.findById(id);
+            if (libro.isEmpty()) {
+                return usuarioId;
+            }
+
+            usuarioId = libro.get().getUsuarioId();
+            libroFisicoDao.deleteById(id);
+        }
+
+        return usuarioId;
+    }
 }

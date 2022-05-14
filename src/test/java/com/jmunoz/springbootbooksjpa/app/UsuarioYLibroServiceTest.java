@@ -119,6 +119,11 @@ class UsuarioYLibroServiceTest {
 		assertEquals(2, ((Collection<LibroKindle>) librosKindle).size(), "Usuario tiene libros kindle");
 	}
 
+	@Test
+	void deleteGradeService() {
+		assertEquals(1, usuarioService.deleteLibro(1, "Físico"), "Devuelve usuario id tras delete");
+	}
+
 	@AfterEach
 	void tearDown() {
 		jdbc.execute("DELETE FROM usuario");
