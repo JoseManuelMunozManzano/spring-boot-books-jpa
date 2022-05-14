@@ -1,9 +1,6 @@
 package com.jmunoz.springbootbooksjpa.app.service;
 
-import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
-import com.jmunoz.springbootbooksjpa.app.models.LibroKindle;
-import com.jmunoz.springbootbooksjpa.app.models.LibroWeb;
-import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.models.*;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroKindleDao;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroWebDao;
@@ -13,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,10 +42,38 @@ public class UsuarioYLibroService {
     @Autowired
     private LibroKindleDao libroKindleDao;
 
+    @Autowired
+    private UsuarioLibros usuarioLibros;
+
     public void createUsuario(String nombre, String apellidos, String email) {
         UsuarioComprador usuario = new UsuarioComprador(nombre, apellidos, email);
         usuario.setId(0);
         usuarioDao.save(usuario);
+    }
+
+    public BibliotecaUsuarioComprador usuarioInformacion(int id) {
+        Optional<UsuarioComprador> usuario = usuarioDao.findById(id);
+        Iterable<LibroFisico> librosFisicos = libroFisicoDao.findLibroByUsuarioId(id);
+        Iterable<LibroWeb> librosWeb = libroWebDao.findLibroByUsuarioId(id);
+        Iterable<LibroKindle> librosKindle = libroKindleDao.findLibroByUsuarioId(id);
+
+        List<Libro> librosFisicosList = new ArrayList<>();
+        librosFisicos.forEach(librosFisicosList::add);
+
+        List<Libro> librosWebList = new ArrayList<>();
+        librosWeb.forEach(librosWebList::add);
+
+        List<Libro> librosKindleList = new ArrayList<>();
+        librosKindle.forEach(librosKindleList::add);
+
+        usuarioLibros.setLibroFisicoResultados(librosFisicosList);
+        usuarioLibros.setLibroWebResultados(librosWebList);
+        usuarioLibros.setLibroKindleResultados(librosKindleList);
+
+        BibliotecaUsuarioComprador bibliotecaUsuarioComprador = new BibliotecaUsuarioComprador(usuario.get().getId(),
+                usuario.get().getNombre(), usuario.get().getApellidos(), usuario.get().getEmail(), usuarioLibros);
+
+        return bibliotecaUsuarioComprador;
     }
 
     public boolean checkIfUsuarioIsNull(Integer id) {
@@ -139,4 +166,5 @@ public class UsuarioYLibroService {
 
         return usuarioId;
     }
+
 }

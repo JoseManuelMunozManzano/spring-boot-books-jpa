@@ -1,7 +1,10 @@
 package com.jmunoz.springbootbooksjpa.app.models;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class UsuarioLibros {
 
     private List<Libro> libroFisicoResultados;

@@ -1,9 +1,6 @@
 package com.jmunoz.springbootbooksjpa.app;
 
-import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
-import com.jmunoz.springbootbooksjpa.app.models.LibroKindle;
-import com.jmunoz.springbootbooksjpa.app.models.LibroWeb;
-import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.models.*;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroKindleDao;
 import com.jmunoz.springbootbooksjpa.app.repository.LibroWebDao;
@@ -145,6 +142,22 @@ class UsuarioYLibroServiceTest {
 	void deleteLibroServiceDevuelveUsuarioIdCero() {
 		assertEquals(0, usuarioService.deleteLibro(0, "kindle"), "No hay usuario con id a 0");
 		assertEquals(0, usuarioService.deleteLibro(1, "revista"), "No hay tipo libro revista");
+	}
+
+	@Test
+	void usuarioInformacion() {
+		BibliotecaUsuarioComprador bibliotecaUsuarioComprador = usuarioService.usuarioInformacion(1);
+
+		assertNotNull(bibliotecaUsuarioComprador);
+
+		assertEquals(1, bibliotecaUsuarioComprador.getId());
+		assertEquals("José Manuel", bibliotecaUsuarioComprador.getNombre());
+		assertEquals("Muñoz Manzano", bibliotecaUsuarioComprador.getApellidos());
+		assertEquals("jmunoz@gmail.com", bibliotecaUsuarioComprador.getEmail());
+
+		assertEquals(1, bibliotecaUsuarioComprador.getUsuarioLibros().getLibroFisicoResultados().size());
+		assertEquals(1, bibliotecaUsuarioComprador.getUsuarioLibros().getLibroWebResultados().size());
+		assertEquals(1, bibliotecaUsuarioComprador.getUsuarioLibros().getLibroKindleResultados().size());
 	}
 
 	@AfterEach
