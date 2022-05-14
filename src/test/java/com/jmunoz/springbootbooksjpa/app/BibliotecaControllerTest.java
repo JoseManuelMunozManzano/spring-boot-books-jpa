@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -49,6 +50,30 @@ public class BibliotecaControllerTest {
     @Autowired
     private UsuarioDao usuarioDao;
 
+    @Value("${sql.script.create.usuario}")
+    private String sqlAddUsuario;
+
+    @Value("${sql.script.create.libro.fisico}")
+    private String sqlAddLibroFisico;
+
+    @Value("${sql.script.create.libro.web}")
+    private String sqlAddLibroWeb;
+
+    @Value("${sql.script.create.libro.kindle}")
+    private String sqlAddLibroKindle;
+
+    @Value("${sql.script.delete.usuario}")
+    private String sqlDeleteUsuario;
+
+    @Value("${sql.script.delete.libro.fisico}")
+    private String sqlDeleteLibroFisico;
+
+    @Value("${sql.script.delete.libro.web}")
+    private String sqlDeleteLibroWeb;
+
+    @Value("${sql.script.delete.libro.kindle}")
+    private String sqlDeleteLibroKindle;
+
     @BeforeAll
     static void beforeAll() {
         request = new MockHttpServletRequest();
@@ -60,8 +85,10 @@ public class BibliotecaControllerTest {
 
     @BeforeEach
     void setUp() {
-        jdbc.execute("INSERT INTO usuario(id, nombre, apellidos, email) " +
-                "VALUES(1, 'José Manuel', 'Muñoz Manzano', 'jmunoz@gmail.com')");
+        jdbc.execute(sqlAddUsuario);
+        jdbc.execute(sqlAddLibroFisico);
+        jdbc.execute(sqlAddLibroWeb);
+        jdbc.execute(sqlAddLibroKindle);
     }
 
     @Test
@@ -135,6 +162,9 @@ public class BibliotecaControllerTest {
 
     @AfterEach
     void tearDown() {
-        jdbc.execute("DELETE FROM usuario");
+        jdbc.execute(sqlDeleteUsuario);
+        jdbc.execute(sqlDeleteLibroFisico);
+        jdbc.execute(sqlDeleteLibroWeb);
+        jdbc.execute(sqlDeleteLibroKindle);
     }
 }

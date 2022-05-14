@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -44,13 +45,36 @@ class UsuarioYLibroServiceTest {
 	@Autowired
 	private LibroKindleDao libroKindleDao;
 
+	@Value("${sql.script.create.usuario}")
+	private String sqlAddUsuario;
+
+	@Value("${sql.script.create.libro.fisico}")
+	private String sqlAddLibroFisico;
+
+	@Value("${sql.script.create.libro.web}")
+	private String sqlAddLibroWeb;
+
+	@Value("${sql.script.create.libro.kindle}")
+	private String sqlAddLibroKindle;
+
+	@Value("${sql.script.delete.usuario}")
+	private String sqlDeleteUsuario;
+
+	@Value("${sql.script.delete.libro.fisico}")
+	private String sqlDeleteLibroFisico;
+
+	@Value("${sql.script.delete.libro.web}")
+	private String sqlDeleteLibroWeb;
+
+	@Value("${sql.script.delete.libro.kindle}")
+	private String sqlDeleteLibroKindle;
+
 	@BeforeEach
 	void setUp() {
-		jdbc.execute("INSERT INTO usuario(id, nombre, apellidos, email) " +
-				"VALUES(1, 'José Manuel', 'Muñoz Manzano', 'jmunoz@gmail.com')");
-		jdbc.execute("INSERT INTO libro_fisico(id, usuario_id, libro) values(1, 1, 'Dune')");
-		jdbc.execute("INSERT INTO libro_web(id, usuario_id, libro) values(1, 1, 'Diseño de Patrones')");
-		jdbc.execute("INSERT INTO libro_kindle(id, usuario_id, libro) values(1, 1, 'La mano izquierda de la oscuridad')");
+		jdbc.execute(sqlAddUsuario);
+		jdbc.execute(sqlAddLibroFisico);
+		jdbc.execute(sqlAddLibroWeb);
+		jdbc.execute(sqlAddLibroKindle);
 	}
 
 	@Test
@@ -169,9 +193,9 @@ class UsuarioYLibroServiceTest {
 
 	@AfterEach
 	void tearDown() {
-		jdbc.execute("DELETE FROM usuario");
-		jdbc.execute("DELETE FROM libro_fisico");
-		jdbc.execute("DELETE FROM libro_web");
-		jdbc.execute("DELETE FROM libro_kindle");
+		jdbc.execute(sqlDeleteUsuario);
+		jdbc.execute(sqlDeleteLibroFisico);
+		jdbc.execute(sqlDeleteLibroWeb);
+		jdbc.execute(sqlDeleteLibroKindle);
 	}
 }
