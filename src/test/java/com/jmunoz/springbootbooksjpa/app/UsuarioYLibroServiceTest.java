@@ -126,6 +126,12 @@ class UsuarioYLibroServiceTest {
 		assertEquals(1, usuarioService.deleteLibro(1, "Kindle"), "Devuelve usuario id tras delete");
 	}
 
+	@Test
+	void deleteLibroServiceDevuelveUsuarioIdCero() {
+		assertEquals(0, usuarioService.deleteLibro(0, "kindle"), "No hay usuario con id a 0");
+		assertEquals(0, usuarioService.deleteLibro(1, "revista"), "No hay tipo libro revista");
+	}
+
 	@AfterEach
 	void tearDown() {
 		jdbc.execute("DELETE FROM usuario");
