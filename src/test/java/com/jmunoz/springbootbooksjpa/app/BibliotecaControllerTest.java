@@ -160,6 +160,30 @@ public class BibliotecaControllerTest {
         ModelAndViewAssert.assertViewName(mav,"error");
     }
 
+    @Test
+    void informacionUsuarioHttpRequest() throws Exception {
+        assertTrue(usuarioDao.findById(1).isPresent());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/informacionUsuario/{id}", 1))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "informacionUsuario");
+    }
+
+    @Test
+    void informacionUsuarioHttpRequestUsuarioNoExiste() throws Exception {
+        assertFalse(usuarioDao.findById(0).isPresent());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/informacionUsuario/{id}", 0))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
     @AfterEach
     void tearDown() {
         jdbc.execute(sqlDeleteUsuario);

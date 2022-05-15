@@ -1,6 +1,7 @@
 package com.jmunoz.springbootbooksjpa.app.controller;
 
 import com.jmunoz.springbootbooksjpa.app.models.Biblioteca;
+import com.jmunoz.springbootbooksjpa.app.models.BibliotecaUsuarioComprador;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
 import com.jmunoz.springbootbooksjpa.app.service.UsuarioYLibroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,14 @@ public class BibliotecaController {
 
     @GetMapping("/informacionUsuario/{id}")
     public String informacionUsuario(@PathVariable int id, Model m) {
+        if (usuarioService.checkIfUsuarioIsNull(id)) {
+            return "error";
+        }
+
+        BibliotecaUsuarioComprador usuarioEntity = usuarioService.usuarioInformacion(id);
+
+        m.addAttribute("usuario", usuarioEntity);
+
         return "informacionUsuario";
     }
 }
