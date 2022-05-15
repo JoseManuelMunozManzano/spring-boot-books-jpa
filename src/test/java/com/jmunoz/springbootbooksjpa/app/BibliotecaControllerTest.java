@@ -266,6 +266,33 @@ public class BibliotecaControllerTest {
         assertFalse(libroFisico.isPresent());
     }
 
+    @Test
+    void deleteLibroValidoHttpRequestUsuarioIdNoExisteEmptyResponse() throws Exception {
+        Optional<LibroFisico> libroFisico = libroFisicoDao.findById(0);
+
+        assertFalse(libroFisico.isPresent());
+
+        // Delete
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/libros/{id}/{tipoLibro}", 0, "Físico"))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
+    @Test
+    void deleteLibroNoValidoHttpRequestTipoLibroNoExisteEmptyResponse() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.
+                get("/libros/{id}/{tipoLibro}", 1, "Revista"))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
     @AfterEach
     void tearDown() {
         jdbc.execute(sqlDeleteUsuario);
