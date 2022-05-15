@@ -1,5 +1,5 @@
   function showOrHideLibro(tipoLibro) {
-        if (gradeType === "fisico") {
+        if (tipoLibro === "Físico") {
               var x = document.getElementById("libroFisico");
               if (x.style.display === "none") {
                 x.style.display = "block";
@@ -7,7 +7,7 @@
                 x.style.display = "none";
               }
         }
-        if (gradeType === "kindle") {
+        if (tipoLibro === "Kindle") {
              var x = document.getElementById("libroKindle");
              if (x.style.display === "none") {
                  x.style.display = "block";
@@ -15,7 +15,7 @@
                 x.style.display = "none";
             }
           }
-        if (gradeType === "web") {
+        if (tipoLibro === "Web") {
              var x = document.getElementById("libroWeb");
              if (x.style.display === "none") {
                  x.style.display = "block";
@@ -30,15 +30,15 @@
     }
 
     function deleteLibroFisico(id) {
-    window.location.href = "/libros/" + id + "/" + "fisico";
+    window.location.href = "/libros/" + id + "/" + "Físico";
     }
 
     function deleteLibroKindle(id) {
-    window.location.href = "/libros/" + id + "/" + "kindle";
+    window.location.href = "/libros/" + id + "/" + "Kindle";
     }
 
     function deleteLibroWeb(id) {
-    window.location.href = "/libros/" + id + "/" + "web";
+    window.location.href = "/libros/" + id + "/" + "Web";
     }
 
     function informacionUsuario(id) {

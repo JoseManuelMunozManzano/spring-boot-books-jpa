@@ -175,6 +175,11 @@ public class UsuarioYLibroService {
     public void configureInformacionUsuarioModel(int id, Model m) {
         BibliotecaUsuarioComprador usuarioEntity = usuarioInformacion(id);
         m.addAttribute("usuario", usuarioEntity);
+
+        // Se informa el número de libros
+        m.addAttribute("fisicoCantidad", usuarioEntity.getUsuarioLibros().getLibroFisicoResultados().size());
+        m.addAttribute("webCantidad", usuarioEntity.getUsuarioLibros().getLibroWebResultados().size());
+        m.addAttribute("kindleCantidad", usuarioEntity.getUsuarioLibros().getLibroKindleResultados().size());
     }
 
 }
