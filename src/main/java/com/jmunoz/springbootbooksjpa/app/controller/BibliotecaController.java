@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BibliotecaController {
@@ -60,6 +61,23 @@ public class BibliotecaController {
 
         BibliotecaUsuarioComprador usuarioEntity = usuarioService.usuarioInformacion(id);
 
+        m.addAttribute("usuario", usuarioEntity);
+
+        return "informacionUsuario";
+    }
+
+    @PostMapping("/libros")
+    public String createLibro(@RequestParam String libro, @RequestParam String tipoLibro, @RequestParam int usuarioId, Model m) {
+        if (usuarioService.checkIfUsuarioIsNull(usuarioId)) {
+            return "error";
+        }
+
+        boolean success = usuarioService.createLibro(libro, usuarioId, tipoLibro);
+        if (!success) {
+            return "error";
+        }
+
+        BibliotecaUsuarioComprador usuarioEntity = usuarioService.usuarioInformacion(usuarioId);
         m.addAttribute("usuario", usuarioEntity);
 
         return "informacionUsuario";

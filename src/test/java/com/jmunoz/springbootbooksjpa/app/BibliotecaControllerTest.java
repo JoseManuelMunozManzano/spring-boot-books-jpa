@@ -50,6 +50,9 @@ public class BibliotecaControllerTest {
     @Autowired
     private UsuarioDao usuarioDao;
 
+    @Autowired
+    private UsuarioYLibroService usuarioService;
+
     @Value("${sql.script.create.usuario}")
     private String sqlAddUsuario;
 
@@ -182,6 +185,30 @@ public class BibliotecaControllerTest {
         ModelAndView mav = mvcResult.getModelAndView();
 
         ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
+    @Test
+    void createLibroValidoHttpRequest() throws Exception {
+        assertTrue(usuarioDao.findById(1).isPresent());
+
+        BibliotecaUsuarioComprador usuario = usuarioService.usuarioInformacion(1);
+
+        assertEquals(1, usuario.getUsuarioLibros().getLibroFisicoResultados().size());
+
+        // Post
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/libros")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("libro", "Dune")
+                .param("tipoLibro", "Físico")
+                .param("usuarioId", "1")
+        ).andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "informacionUsuario");
+
+        usuario = usuarioService.usuarioInformacion(1);
+        assertEquals(2, usuario.getUsuarioLibros().getLibroFisicoResultados().size());
     }
 
     @AfterEach
