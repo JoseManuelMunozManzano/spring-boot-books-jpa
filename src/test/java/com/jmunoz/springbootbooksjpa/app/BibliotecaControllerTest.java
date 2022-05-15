@@ -211,6 +211,20 @@ public class BibliotecaControllerTest {
         assertEquals(2, usuario.getUsuarioLibros().getLibroFisicoResultados().size());
     }
 
+    @Test
+    void createLibroValidoHttpRequestUsuarioNoExisteEmptyResponse() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/libros")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("libro", "Dune")
+                .param("tipoLibro", "Físico")
+                .param("usuarioId", "0")
+        ).andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
     @AfterEach
     void tearDown() {
         jdbc.execute(sqlDeleteUsuario);
