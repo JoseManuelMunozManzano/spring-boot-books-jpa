@@ -59,10 +59,7 @@ public class BibliotecaController {
             return "error";
         }
 
-        BibliotecaUsuarioComprador usuarioEntity = usuarioService.usuarioInformacion(id);
-
-        m.addAttribute("usuario", usuarioEntity);
-
+        usuarioService.configureInformacionUsuarioModel(id, m);
         return "informacionUsuario";
     }
 
@@ -77,9 +74,20 @@ public class BibliotecaController {
             return "error";
         }
 
-        BibliotecaUsuarioComprador usuarioEntity = usuarioService.usuarioInformacion(usuarioId);
-        m.addAttribute("usuario", usuarioEntity);
-
+        usuarioService.configureInformacionUsuarioModel(usuarioId, m);
         return "informacionUsuario";
     }
+
+    @GetMapping("/libros/{id}/{tipoLibro}")
+    public String deleteLibro(@PathVariable int id, @PathVariable String tipoLibro, Model m) {
+        int usuarioId = usuarioService.deleteLibro(id, tipoLibro);
+
+        if (usuarioId == 0) {
+            return "error";
+        }
+
+        usuarioService.configureInformacionUsuarioModel(usuarioId, m);
+        return "informacionUsuario";
+    }
+
 }

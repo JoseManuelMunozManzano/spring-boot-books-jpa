@@ -1,7 +1,9 @@
 package com.jmunoz.springbootbooksjpa.app;
 
 import com.jmunoz.springbootbooksjpa.app.models.BibliotecaUsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.models.LibroFisico;
 import com.jmunoz.springbootbooksjpa.app.models.UsuarioComprador;
+import com.jmunoz.springbootbooksjpa.app.repository.LibroFisicoDao;
 import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import com.jmunoz.springbootbooksjpa.app.service.UsuarioYLibroService;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -52,6 +55,9 @@ public class BibliotecaControllerTest {
 
     @Autowired
     private UsuarioYLibroService usuarioService;
+
+    @Autowired
+    private LibroFisicoDao libroFisicoDao;
 
     @Value("${sql.script.create.usuario}")
     private String sqlAddUsuario;
@@ -237,6 +243,27 @@ public class BibliotecaControllerTest {
         ModelAndView mav = mvcResult.getModelAndView();
 
         ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
+    @Test
+    void deleteLibroValidoHttpRequest() throws Exception {
+        Optional<LibroFisico> libroFisico = libroFisicoDao.findById(1);
+
+        assertTrue(libroFisico.isPresent());
+
+        // Delete
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/libros/{id}/{tipoLibro}", 1, "Físico"))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "informacionUsuario");
+
+        // Confirmamos delete
+        libroFisico = libroFisicoDao.findById(1);
+
+        assertFalse(libroFisico.isPresent());
     }
 
     @AfterEach

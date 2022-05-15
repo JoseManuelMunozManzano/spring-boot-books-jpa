@@ -8,6 +8,7 @@ import com.jmunoz.springbootbooksjpa.app.repository.UsuarioDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -169,6 +170,11 @@ public class UsuarioYLibroService {
         }
 
         return usuarioId;
+    }
+
+    public void configureInformacionUsuarioModel(int id, Model m) {
+        BibliotecaUsuarioComprador usuarioEntity = usuarioInformacion(id);
+        m.addAttribute("usuario", usuarioEntity);
     }
 
 }
